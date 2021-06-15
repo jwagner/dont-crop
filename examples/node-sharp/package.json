@@ -1,0 +1,12 @@
+{
+  "name": "example",
+  "version": "0.0.0",
+  "dependencies": {
+    "dont-crop": "file:../..",
+    "sharp": "^0.28.3",
+    "ts-node": "^10.0.0"
+  },
+  "scripts": {
+    "start": "ts-node example.ts"
+  }
+}

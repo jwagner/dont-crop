@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "airbnb-typescript/base"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "no-console": "off",
+    "no-plusplus": "off",
+    "no-bitwise": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-param-reassign": "off",
+    "no-nested-ternary": "off",
+    "import/prefer-default-export": "off"
+  },
+  "overrides": [
+    {
+      "files": "examples/**/*",
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
+}

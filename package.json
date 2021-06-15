@@ -1,0 +1,61 @@
+{
+  "name": "dont-crop",
+  "version": "0.0.1",
+  "description": "A library to fit gradients to images and extract it's dominant colors to help you avoid cropping images.",
+  "main": "./dist/cjs/lib.js",
+  "module": "./dist/mjs/lib.js",
+  "types": "./dist/mjs/lib.d.ts",
+  "exports": {
+    "import": "./dist/mjs/lib.js",
+    "require": "./dist/cjs/lib.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://29a.ch/sandbox/2021/dont-crop/",
+  "sideEffects": false,
+  "scripts": {
+    "start": "webpack serve",
+    "build": "webpack build --env production",
+    "docs": "typedoc --out public/docs src/lib.ts && cp -r docs public/docs/",
+    "lint": "eslint",
+    "watch": "jest --watchAll --detectOpenHandles",
+    "test": "jest",
+    "prepare": "scripts/prepare.sh",
+    "endToEndTest": "./scripts/endToEndTest.sh"
+  },
+  "author": "Jonas Wagner",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/benchmark": "^2.1.0",
+    "@types/jest": "^26.0.23",
+    "@types/puppeteer": "^5.4.3",
+    "@types/react": "^17.0.9",
+    "@types/react-dom": "^17.0.6",
+    "@types/serve-static": "^1.13.9",
+    "@types/sharp": "^0.28.2",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "benchmark": "^2.1.4",
+    "css-loader": "^5.2.6",
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-plugin-import": "^2.22.1",
+    "html-webpack-plugin": "^5.3.1",
+    "jest": "^27.0.3",
+    "puppeteer": "^10.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "serve-static": "^1.14.1",
+    "sharp": "^0.28.3",
+    "style-loader": "^2.0.0",
+    "ts-jest": "^27.0.1",
+    "ts-loader": "^9.2.2",
+    "ts-node": "^10.0.0",
+    "typedoc": "^0.20.36",
+    "typescript": "^4.2.4",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

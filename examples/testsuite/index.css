@@ -1,0 +1,100 @@
+html, body {
+  background: #eee;
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: #0040b8;
+}
+
+body {
+  max-width: 1024px;
+  margin: auto;
+  padding: 0 1em;
+}
+
+h1 {
+  color: #333;
+  text-shadow: #fff 0 1px;
+}
+
+
+label {
+  display: block;
+  margin: 1em 0;
+}
+
+input, select {
+  display: block;
+  width: 256px;
+  max-width: 100%;
+}
+
+.logo {
+  max-width: 100%;
+}
+
+.image-container {
+  margin: 32px auto;
+}
+
+.frame {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+  width:  1024px;
+  height: 512px;
+  max-height: 50vw;
+  border: 4px solid white;
+  text-align: center;
+  background-color: #666;
+
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.frame img {
+  height: 100%;
+}
+
+.colors {
+  display: inline-block;
+  margin-right: 1ex;
+  border: 1px solid white;
+  height: 1em;
+}
+
+.color {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+
+.dropzone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.note {
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  color: #eee;
+  font-size: 1.5em;
+  text-shadow: 0 2px 4px #000;
+  padding: 1em;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}

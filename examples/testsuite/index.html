@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+  <%= htmlWebpackPlugin.tags.headTags %>
+</head>
+
+<body>
+  <h1><img class="logo" src="<%=require('../../docs/logo.png')%>" width=400></h1>
+  <p>Dont-crop is a javascript library to avoid cropping images by padding
+    them with a matching background color or matching the images with a fitting gradient instead.</p>
+  <p>
+    You can learn more about how to use it on <a href="https://github.com/jwagner/dont-crop">github</a>.
+    To test it with your own images just drag & drop them onto the zone bellow.</p>
+  <h2>Test it with our own image</h2>
+  <div class="image-container image-drop-container">
+    <div class="frame">
+      <span class="note">Drop an image onto this frame or click it to select one.</span>
+      <input class="dropzone" type="file" />
+    </div>
+    <p class="info">
+    <div class="colors"></div>
+    </p>
+  </div>
+  <h2>Or a few test images</h2>
+  <%= htmlWebpackPlugin.tags.bodyTags %>
+</body>
+
+</html>
