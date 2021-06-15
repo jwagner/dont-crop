@@ -15,6 +15,9 @@
     "no-nested-ternary": "off",
     "import/prefer-default-export": "off"
   },
+  "ignorePatterns": [
+    "tests/node-module-compatibility"
+  ],
   "overrides": [
     {
       "files": "examples/**/*",

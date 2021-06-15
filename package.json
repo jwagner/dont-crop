@@ -1,6 +1,6 @@
 {
   "name": "dont-crop",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A library to fit gradients to images and extract it's dominant colors to help you avoid cropping images.",
   "main": "./dist/cjs/lib.js",
   "module": "./dist/mjs/lib.js",
@@ -22,7 +22,7 @@
     "watch": "jest --watchAll --detectOpenHandles",
     "test": "jest",
     "prepare": "scripts/prepare.sh",
-    "endToEndTest": "./scripts/endToEndTest.sh"
+    "endToEndTest": "./tests/endToEndTest.sh"
   },
   "author": "Jonas Wagner",
   "license": "MIT",
