@@ -1,6 +1,6 @@
 import { Color, saturation } from './color';
 
-const scoreBias = 0.1 * 255;
+const scoreBias = 0.1;
 
 interface ColorDistance {
   ai: number,
@@ -8,7 +8,7 @@ interface ColorDistance {
   distance: number
 }
 export function mergeSimilarColors(colors: Color[], keep: number): Color[] {
-  const intensities = colors.map(saturation);
+  const intensities = colors.map(intensity);
   const distances: ColorDistance[] = [];
   for (let ai = 0; ai < colors.length; ai++) {
     const a = colors[ai];
@@ -33,6 +33,13 @@ export function mergeSimilarColors(colors: Color[], keep: number): Color[] {
     removed++;
   }
   return remainingColors.filter((c) => !!c) as Color[];
+}
+
+function intensity(color: Color) {
+  const brightness = (color[0] + color[1] + color[2]) / 255 / 3;
+  const distanceFromGray = Math.abs(brightness - 0.21);
+  return (
+    saturation(color) / 255) * Math.max(0.2, brightness) * 5 * 0.8 + (0.2 * distanceFromGray);
 }
 
 function distanceSquared(a: Color, b: Color): number {

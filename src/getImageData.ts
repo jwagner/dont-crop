@@ -20,6 +20,7 @@ export function getImageData(image: CanvasImageSource, maxDimension: number | un
   canvas.height = outputHeight;
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('getContext failed');
+  ctx.imageSmoothingEnabled = false;
   ctx.drawImage(image, 0, 0, outputWidth, outputHeight);
   return ctx.getImageData(0, 0, outputWidth, outputHeight);
 }

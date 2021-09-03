@@ -9,12 +9,13 @@ function processImage(
   colorsEl: HTMLElement,
 ) {
   const gradient = fitGradient(imageEl);
-  const palette = getPalette(imageEl, 4);
+  const palette = getPalette(imageEl, 5);
   frameEl.style.background = gradient;
   while (colorsEl.lastChild) colorsEl.removeChild(colorsEl.lastChild);
   palette.forEach((color) => {
     const colorEl = document.createElement('span');
     colorEl.className = 'color';
+    colorEl.title = color;
     colorEl.style.backgroundColor = color;
     colorsEl.appendChild(colorEl);
   });

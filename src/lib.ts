@@ -32,7 +32,7 @@ export function getPalette(image: CanvasImageSource, numberOfColors: number = 8)
  *
  */
 export function getPaletteFromImageData(imageData: ImageData, numberOfColors: number = 4) {
-  const colors = kmeans(imageData, Math.min(32, numberOfColors * 4), 8)
+  const colors = kmeans(imageData, Math.min(64, numberOfColors * 8), 8)
     .filter((c) => c.count > 0)
     .sort((a, b) => b.count - a.count)
     .map<Color>((c) => [c.x, c.y, c.z]);

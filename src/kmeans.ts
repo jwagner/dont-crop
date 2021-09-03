@@ -1,5 +1,4 @@
 import { histogramColors } from './histogramColors';
-import { mergeSimilarColors } from './mergeSimilarColors';
 // import mcgRandom from './mcgRandom';
 
 interface Cluster {
@@ -36,7 +35,7 @@ export function kmeans(image: ImageData, k: number, iterations: number): Cluster
   const { data } = image;
   const clusters: Cluster[] = [];
   const nextClusters: Cluster[] = [];
-  mergeSimilarColors(histogramColors(image, k * 2), k).forEach(([x, y, z]) => {
+  (histogramColors(image, k)).forEach(([x, y, z]) => {
     clusters.push({
       x, y, z, count: 0,
     });

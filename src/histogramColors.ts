@@ -1,6 +1,6 @@
 import { Color } from './color';
 
-const resolution = 8; // needs to be power of two <= colorBits
+const resolution = 4; // needs to be power of two <= colorBits
 const indexShiftG = Math.log2(resolution);
 const indexShiftB = indexShiftG * 2;
 const colorBits = 8;
