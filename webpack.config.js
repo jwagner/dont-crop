@@ -12,13 +12,14 @@ module.exports = (env) => {
     mode,
     devtool: dev && 'eval-source-map',
     devServer: {
-      contentBase: path.join(__dirname, 'examples/testsuite/'),
+      static: path.join(__dirname, 'examples/testsuite/'),
+      host: '0.0.0.0',
       headers: {
         // this works around getting net::ERR_CONTENT_LENGTH_MISMATCH 200 (OK)
         // with webpack running inside a vs code dev container.
         // Poking at things in the dark here but I presume it's
         // related to keep alives. :)
-        connection: 'close',
+        // connection: 'close',
       },
     },
     entry: {
