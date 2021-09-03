@@ -59,6 +59,21 @@ input, select {
   height: 100%;
 }
 
+.visualization {
+  position: absolute;
+  z-index: 10;
+  top:  0em;
+  right: 0;
+  /* transform: scale(0.5); */
+  /* transform-origin: 100% 0%; */
+  transition: opacity 0.2s ease-out;
+  opacity: 0;
+}
+
+.frame:hover  .visualization {
+  opacity: 1.0;
+}
+
 .colors {
   display: inline-block;
   margin-right: 1ex;

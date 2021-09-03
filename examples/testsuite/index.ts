@@ -1,4 +1,5 @@
 import { fitGradient, getPalette } from '../../src/lib';
+import { fitGradient as fitGradientInternal } from '../../src/fitGradient';
 import './index.css';
 import * as index from './unsplash/small/index.json';
 
@@ -17,7 +18,51 @@ function processImage(
     colorEl.style.backgroundColor = color;
     colorsEl.appendChild(colorEl);
   });
+  const visualizationCanvas = visualizeLinearRegression(imageEl);
+  visualizationCanvas.className = 'visualization';
+  frameEl.appendChild(visualizationCanvas);
   return { gradient, palette };
+}
+
+function visualizeLinearRegression(imageEl: HTMLImageElement): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = imageEl.naturalWidth;
+  canvas.height = imageEl.naturalHeight;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('could not get context');
+  ctx.drawImage(imageEl, 0, 0);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const xScale = 0.5;
+  canvas.width = 256 * xScale;
+  const cw = canvas.width;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const outputImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const { data: id, width: w, height: h } = imageData;
+  const od = outputImageData.data;
+  // rgb parade
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      for (let c = 0; c < 3; c++) {
+        const value = id[(y * w + x) * 4 + c];
+        od[((value * xScale) | 0 + y * cw) * 4 + c] += 8;
+      }
+    }
+  }
+  ctx.putImageData(outputImageData, 0, 0);
+
+  const gradient = fitGradientInternal(imageData);
+  ctx.shadowBlur = 4;
+  ctx.shadowColor = '#000';
+  ctx.shadowOffsetY = 1;
+  ['#f33', '#3f3', '#33f'].forEach((color, c) => {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(gradient[0][c] * xScale, 0);
+    ctx.lineTo(gradient[1][c] * xScale, h);
+    ctx.stroke();
+  });
+  return canvas;
 }
 
 interface ImageMetaData {

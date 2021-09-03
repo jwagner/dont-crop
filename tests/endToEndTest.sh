@@ -34,6 +34,7 @@ echo "testing node commonjs"
 node commonjs.js
 if [ "$node_major_version" -ge 14 ]
   then
+    echo "testing node esm"
     node esm.mjs
 fi
 cd ..

@@ -1,8 +1,9 @@
 import { kmeans } from './kmeans';
 import { fitGradient as fitGradientImplementation } from './fitGradient';
-import { Color } from './color';
+import { Color, saturation } from './color';
 import { getImageData } from './getImageData';
 import { hexColorString, linearGradient } from './format';
+import { mergeSimilarColors } from './mergeSimilarColors';
 
 export { getImageData } from './getImageData';
 
@@ -12,14 +13,14 @@ export { getImageData } from './getImageData';
  * this function only works in the browser.
  *  * In nodejs use `getPaletteFromImageData` directly instead.
  * @param image the image to extract the palette from.
- *  Will be scaled down to at most 32x32.
+ *  Will be scaled down to at most 64x64.
  *  Must be loaded/complete.
  * @param numberOfColors upper limit on the number of colors to be returned
  * @returns representative colors of the image ordered by importance (size of the cluster)
  */
 // integration tested only
-export function getPalette(image: CanvasImageSource, numberOfColors: number = 4): string[] {
-  const imageData = getImageData(image, 32);
+export function getPalette(image: CanvasImageSource, numberOfColors: number = 8): string[] {
+  const imageData = getImageData(image, 128);
   return getPaletteFromImageData(imageData, numberOfColors);
 }
 
@@ -31,11 +32,13 @@ export function getPalette(image: CanvasImageSource, numberOfColors: number = 4)
  *
  */
 export function getPaletteFromImageData(imageData: ImageData, numberOfColors: number = 4) {
-  const colors = kmeans(imageData, numberOfColors, 16)
+  const colors = kmeans(imageData, Math.min(32, numberOfColors * 4), 8)
     .filter((c) => c.count > 0)
     .sort((a, b) => b.count - a.count)
     .map<Color>((c) => [c.x, c.y, c.z]);
-  return colors.map(hexColorString);
+  return mergeSimilarColors(colors, numberOfColors)
+    .sort((a, b) => saturation(b) - saturation(a))
+    .map(hexColorString);
 }
 
 /**
