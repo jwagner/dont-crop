@@ -35,14 +35,16 @@ async function loadImageData(size: number): Promise<ImageData> {
 // work around top level await
 (async function main() {
   const imageData32 = await loadImageData(32);
-  const imageData256 = await loadImageData(128);
+  const imageData128 = await loadImageData(128);
+  const imageData64 = await loadImageData(64);
   // const colors = imageDatas.map((imageData) => dontCropImageData(imageData));
-  const suite = new Benchmark.Suite('Name', { minTime: 600, maxTime: 6000, minSamples: 1000000 });
+  const suite = new Benchmark.Suite('Name', { minTime: 600, maxTime: 60000, minSamples: 10000000 });
 
   // add tests
   suite
     .add('fitGradientToImageData', () => fitGradientToImageData(imageData32))
-    .add('getPaletteFromImageData', () => getPaletteFromImageData(imageData256))
+    .add('getPaletteFromImageData(fast=false)', () => getPaletteFromImageData(imageData128))
+    .add('getPaletteFromImageData(fast=true)', () => getPaletteFromImageData(imageData64))
     .on('cycle', (event: { target: any; }) => {
       console.log(String(event.target));
     })

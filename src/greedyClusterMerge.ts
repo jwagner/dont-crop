@@ -1,8 +1,8 @@
 import { Cluster } from './kmeans';
 
 const distanceHueScale = 1.5;
-const countImportance = 10;
-const saturationImportance = 2;
+const countImportance = 8;
+const chromaImportance = 2;
 const distanceThreshold = 1500;
 
 interface ClusterDistance {
@@ -29,8 +29,9 @@ export function greedyClusterMerge(clusters: Cluster[], keep: number): Cluster[]
   for (let removed = 0; removed < (clusters.length - keep);) {
     const next = distances.pop();
     if (!next) break; // should not be possible unless keep is negative
-    let { ai, bi, distance } = next;
-    if (distance > distanceThreshold) break;
+    // eslint-disable-next-line prefer-const
+    let { ai, bi } = next;
+    if (next.distance > distanceThreshold) break;
     let a = remainingClusters[ai];
     let b = remainingClusters[bi];
     if (!a || !b) continue;
@@ -49,10 +50,10 @@ export function greedyClusterMerge(clusters: Cluster[], keep: number): Cluster[]
 }
 
 function importance(cluster: Cluster) {
+  const chroma = Math.sqrt(squared(cluster.y) + squared(cluster.z));
   return (Math.log(cluster.count) * countImportance
-   + Math.sqrt(squared(cluster.y) + squared(cluster.z))
+   + chroma * chromaImportance
    // the hue of dark areas doesn't matter much
-   * saturationImportance * (Math.min(1, cluster.x / 50))
    + cluster.x);
 }
 
