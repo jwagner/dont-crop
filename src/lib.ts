@@ -1,9 +1,7 @@
-import { kmeans } from './kmeans';
 import { fitGradient as fitGradientImplementation } from './fitGradient';
-import { Color, saturation } from './color';
 import { getImageData } from './getImageData';
 import { hexColorString, linearGradient } from './format';
-import { mergeSimilarColors } from './mergeSimilarColors';
+import { getPalette as getPaletteImplemention } from './getPalette';
 
 export { getImageData } from './getImageData';
 
@@ -20,7 +18,7 @@ export { getImageData } from './getImageData';
  */
 // integration tested only
 export function getPalette(image: CanvasImageSource, numberOfColors: number = 8): string[] {
-  const imageData = getImageData(image, 128);
+  const imageData = getImageData(image, 256);
   return getPaletteFromImageData(imageData, numberOfColors);
 }
 
@@ -32,12 +30,7 @@ export function getPalette(image: CanvasImageSource, numberOfColors: number = 8)
  *
  */
 export function getPaletteFromImageData(imageData: ImageData, numberOfColors: number = 4) {
-  const colors = kmeans(imageData, Math.min(64, numberOfColors * 8), 8)
-    .filter((c) => c.count > 0)
-    .sort((a, b) => b.count - a.count)
-    .map<Color>((c) => [c.x, c.y, c.z]);
-  return mergeSimilarColors(colors, numberOfColors)
-    .sort((a, b) => saturation(b) - saturation(a))
+  return getPaletteImplemention(imageData, numberOfColors)
     .map(hexColorString);
 }
 

@@ -42,6 +42,7 @@ function intensity(color: Color) {
     saturation(color) / 255) * Math.max(0.2, brightness) * 5 * 0.8 + (0.2 * distanceFromGray);
 }
 
+const squared = (x: number) => x * x;
 function distanceSquared(a: Color, b: Color): number {
-  return a.reduce((sum, ai, i) => sum + (ai - b[i]) ** 2, 0);
+  return a.reduce((sum, ai, i) => sum + squared(ai - b[i]), 0);
 }
