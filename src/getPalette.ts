@@ -8,11 +8,8 @@ export function getPalette(imageData: ImageData, numberOfColors: number): Color[
   const labData = srgbToLabComposed(imageData.data);
   const k = Math.max(32, numberOfColors);
   const initialClusters = clusterHistogram(labData, 6, k);
-  const clusters = kmeans(labData, initialClusters, k, 8);
+  const clusters = kmeans(labData, initialClusters, 8).filter((c) => c.count > 0);
   return greedyClusterMerge(clusters, numberOfColors)
-  // .sort((a, b) => b.count - a.count)
-  // return clusterHistogram(labData, 6, 32)
-  // return nonTinyClusters
     .map(
       (cluster) => {
         const srgb = labToSrgb({ l: cluster.x, a: cluster.y, b: cluster.z });
@@ -23,5 +20,4 @@ export function getPalette(imageData: ImageData, numberOfColors: number): Color[
         ];
       },
     );
-  // .sort((a, b) => saturation(b) - saturation(a))
 }

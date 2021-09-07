@@ -37,11 +37,8 @@ const squared = (x: number) => x * x;
 export function kmeans(
   data: Float64Array,
   initialClusters: Point[],
-  k: number,
   iterations: number,
 ): Cluster[] {
-  // const random = mcgRandom();
-  if (k < 1) throw new Error('k must be greater than 0');
   // const { data } = image;
   const clusters: Cluster[] = [];
   const nextClusters: Cluster[] = [];
@@ -68,7 +65,7 @@ export function kmeans(
       cluster.x = nextCluster.x / count;
       cluster.y = nextCluster.y / count;
       cluster.z = nextCluster.z / count;
-      cluster.count = count;
+      cluster.count = nextCluster.count;
 
       // reset next clusters
       nextCluster.x = 0;

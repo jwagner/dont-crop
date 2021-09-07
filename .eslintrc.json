@@ -25,6 +25,12 @@
       "rules": {
         "import/no-extraneous-dependencies": "off"
       }
+    },
+    {
+      "files": "src/test-helpers.ts",
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
     }
   ]
 }
