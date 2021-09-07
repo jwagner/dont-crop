@@ -78,7 +78,11 @@ function log(page: puppeteer.Page) {
   server.listen(PORT);
 
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox'],
+    args: [
+      '--no-sandbox',
+      '--disable-accelerated-2d-canvas',
+      '--force-color-profile=srgb',
+    ],
   });
 
   try {
