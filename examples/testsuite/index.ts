@@ -109,7 +109,7 @@ async function render() {
     });
 
     imageEl.src = img.src;
-    const infoEl = document.createElement('p');
+    const infoEl = document.createElement('div');
     infoEl.className = 'info';
     infoEl.appendChild(colorsEl);
     infoEl.appendChild(document.createTextNode('Photo by '));

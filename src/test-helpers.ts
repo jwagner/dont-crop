@@ -1,6 +1,6 @@
 import { join } from 'path';
 import sharp from 'sharp';
-import { srgbToLabComposed } from './lab';
+import { srgbToLabArray } from './lab';
 
 export async function getTestImageData(): Promise<ImageData> {
   const src = join(__dirname, '../tests/image.jpg');
@@ -18,5 +18,5 @@ export async function getTestImageData(): Promise<ImageData> {
 
 export async function getLabTestData() {
   const imageData = await getTestImageData();
-  return srgbToLabComposed(imageData.data);
+  return srgbToLabArray(imageData.data);
 }

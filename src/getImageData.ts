@@ -8,8 +8,6 @@ function getCanvas(): HTMLCanvasElement {
 
 export function getImageData(image: CanvasImageSource, maxDimension: number | undefined) {
   const canvas = getCanvas();
-  document.body.appendChild(canvas);
-  canvasEl = undefined;
   const Img = HTMLImageElement;
   const width = image instanceof Img ? image.naturalWidth : +image.width;
   const height = image instanceof Img ? image.naturalHeight : +image.height;

@@ -59,7 +59,9 @@ export function labToSrgb({ l, a, b }: ColorLab): ColorRGB {
   };
 }
 
-export function srgbToLabComposed(data: Uint8ClampedArray): Float64Array {
+// Float64Arrays are used to avoid conversions back to double or
+// wrapping all arithmetic in fround.
+export function srgbToLabArray(data: Uint8ClampedArray): Float64Array {
   const result = new Float64Array(((data.length / 4) * 3) | 0);
   for (let i = 0, ri = 0; i < data.length; i += 4, ri += 3) {
     const rgb = { r: data[i] / 255, g: data[i + 1] / 255, b: data[i + 2] / 255 };
@@ -67,30 +69,6 @@ export function srgbToLabComposed(data: Uint8ClampedArray): Float64Array {
     result[ri] = l;
     result[ri + 1] = a;
     result[ri + 2] = b;
-  }
-  return result;
-}
-
-export function srgbToLabInline(data: Uint8ClampedArray): Float64Array {
-  const d = new Uint8Array(data.buffer);
-  const result = new Float64Array(((d.length / 4) * 3) | 0);
-  for (let i = 0, ri = 0; i < d.length; i += 4, ri += 3) {
-    const r = d[i];
-    const g = d[i + 1];
-    const b = d[i + 2];
-    const rl = toLinear(r) * 100;
-    const gl = toLinear(g) * 100;
-    const bl = toLinear(b) * 100;
-    // via https://en.wikipedia.org/wiki/SRGB
-    const x = 0.4124 * rl + 0.3576 * gl + 0.1805 * bl;
-    const y = 0.2126 * rl + 0.7152 * gl + 0.0722 * bl;
-    const z = 0.0193 * rl + 0.1192 * gl + 0.9505 * bl;
-    // https://en.wikipedia.org/wiki/CIELAB_color_space#From_CIEXYZ_to_CIELAB
-    const fy = f(y / yn);
-
-    result[ri] = 116 * fy - 16;
-    result[ri + 1] = 500 * (f(x / xn) - fy);
-    result[ri + 2] = 200 * (fy - f(z / zn));
   }
   return result;
 }

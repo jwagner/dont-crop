@@ -22,7 +22,8 @@
     "watch": "jest --watchAll --detectOpenHandles",
     "test": "jest",
     "prepare": "scripts/prepare.sh",
-    "endToEndTest": "./tests/endToEndTest.sh"
+    "endToEndTest": "./tests/endToEndTest.sh",
+    "benchmark": "ts-node scripts/benchmark.ts"
   },
   "author": "Jonas Wagner",
   "license": "MIT",
