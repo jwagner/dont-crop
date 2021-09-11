@@ -38,6 +38,7 @@
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
     "benchmark": "^2.1.4",
+    "canvas": "^2.8.0",
     "css-loader": "^5.2.6",
     "eslint": "^7.23.0",
     "eslint-config-airbnb-typescript": "^12.3.1",

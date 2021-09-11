@@ -8,8 +8,18 @@ Dont-crop is a [small](#performance), dependency free javascript library to fit 
 
 It can be used to pad images instead of cropping them, for a very compact [blur up](https://engineering.fb.com/2015/08/06/android/the-technology-behind-preview-photos/) and what ever else you can come up with.
 
-![lead image](docs/lead-lossless.webp)
+## Examples
+
+### fitGradient()
+![fitGradient](docs/fitGradient.webp)
 Photo by [Abed Ismail](https://unsplash.com/photos/fZXZ1-hbFrY)
+
+### getPalette()
+![getPalette](docs/getPalette.webp)
+
+### More Examples
+
+View the [demo page](https://29a.ch/sandbox/2021/dont-crop/)  to see more examples and experiment with your own images.
 
 ## Installation
 ```
@@ -96,6 +106,7 @@ Their performance depends on the exact browser and device in question as well bu
 ## Test Coverage
 
 The code is well covered in tests. The examples are used as end to end tests in both node and a browser (chrome via puppeteer).
+
 
 ## Algorithms
 
