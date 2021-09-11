@@ -3,7 +3,14 @@ import { hexColorString, hexString, linearGradient } from './format';
 
 describe('hexString', () => {
   test.each([
+    [-1, '00'],
     [0, '00'],
+    [0.4, '00'],
+    [0.5, '01'],
+    [254.4, 'fe'],
+    [254.5, 'ff'],
+    [255, 'ff'],
+    [256, 'ff'],
   ])('%p  %p', (input, expected) => {
     const actual = hexString(input);
     expect(actual).toEqual(expected);

@@ -11,7 +11,7 @@ interface ClusterDistance {
   distance: number
 }
 
-export function greedyClusterMerge(clusters: Cluster[], keep: number): Cluster[] {
+export function greedyClusterMerge(clusters: Readonly<Cluster>[], keep: number): Cluster[] {
   const distances: ClusterDistance[] = [];
   for (let ai = 0; ai < clusters.length; ai++) {
     const a = clusters[ai];
@@ -51,9 +51,11 @@ export function greedyClusterMerge(clusters: Cluster[], keep: number): Cluster[]
 
 function importance(cluster: Cluster) {
   const chroma = Math.sqrt(squared(cluster.y) + squared(cluster.z));
+  // the larger the cluster the more important it is
   return (Math.log(cluster.count) * countImportance
+  // the more saturated the color the more important it is
    + chroma * chromaImportance
-   // the hue of dark areas doesn't matter much
+   // also make brighter colors a bit more important
    + cluster.x);
 }
 
