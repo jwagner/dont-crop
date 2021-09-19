@@ -49,10 +49,15 @@ async function testTestsuite(browser: puppeteer.Browser) {
     const html = await page.content();
     writeFileSync('public/index.html', html);
   } catch (error) {
-    console.error(error);
-    console.log('expected', JSON.stringify(expected, undefined, ' '));
-    console.log('actual', JSON.stringify(actual, undefined, ' '));
-    throw error;
+    if (process.env.UPDATE_SNAPSHOT) {
+      writeFileSync(snapshotPath, JSON.stringify(actual, undefined, ' '));
+      console.log('updated snapshot');
+    } else {
+      console.error(error);
+      console.log('expected', JSON.stringify(expected, undefined, ' '));
+      console.log('actual', JSON.stringify(actual, undefined, ' '));
+      throw error;
+    }
   }
 }
 
@@ -73,7 +78,11 @@ function log(page: puppeteer.Page) {
   server.listen(PORT);
 
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox'],
+    args: [
+      '--no-sandbox',
+      '--disable-accelerated-2d-canvas',
+      '--force-color-profile=srgb',
+    ],
   });
 
   try {

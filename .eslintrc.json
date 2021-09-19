@@ -7,6 +7,7 @@
   },
   "rules": {
     "no-console": "off",
+    "no-continue": "off",
     "no-plusplus": "off",
     "no-bitwise": "off",
     "no-use-before-define": "off",
@@ -21,6 +22,12 @@
   "overrides": [
     {
       "files": "examples/**/*",
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    },
+    {
+      "files": "src/test-helpers.ts",
       "rules": {
         "import/no-extraneous-dependencies": "off"
       }

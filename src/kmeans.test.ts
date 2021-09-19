@@ -1,49 +1,98 @@
 import { kmeans } from './kmeans';
-
-const image1x1 = { width: 1, height: 1, data: new Uint8ClampedArray([127, 127, 127, 255]) };
+import { getLabTestData } from './test-helpers';
 
 describe('kmeans', () => {
-  test('regular image', () => {
-    const image = {
-      width: 128,
-      height: 127,
-      data: new Uint8ClampedArray(128 * 127 * 4),
-    };
-    for (let i = 0; i < image.width * image.height; i++) {
-      if (i < image.width * 64) {
-        image.data[i * 4] = 222;
-      } else if (i < image.width * 72) {
-        image.data[i * 4 + 1] = 200;
-      } else {
-        image.data[i * 4] = 128;
-        image.data[i * 4 + 1] = 127;
-        image.data[i * 4 + 2] = 31;
-      }
-    }
-    const clusters = kmeans(image, 4, 16);
-    expect(clusters).toEqual(expect.arrayContaining(
-      [{
-        count: 7040, x: 128, y: 127, z: 31,
-      }, {
-        count: 1024, x: 0, y: 200, z: 0,
-      }, {
-        count: 8192, x: 222, y: 0, z: 0,
-      }],
-    ));
+  const colors = [
+    { x: 50, y: -32, z: 0 },
+    { x: 60, y: -25, z: 2 },
+    { x: 0, y: 0, z: 0 },
+    { x: 100, y: 0, z: 0 },
+  ];
+  const components = ['x', 'y', 'z'] as const;
+  const perColor = 4;
+  const nPixels = colors.length * perColor;
+  const pixels = new Float64Array(nPixels * components.length).map((_, i) => {
+    const color = colors[((i / nPixels / components.length) * colors.length) | 0];
+    const component = components[i % (components.length)];
+    return color[component];
+  });
+  test('perfect initial clusters', () => {
+    const clusters = kmeans(pixels, colors, 8);
+    colors.forEach((color, i) => {
+      expect(clusters[i].count).toEqual(perColor);
+      expect(clusters[i].x).toBeCloseTo(color.x);
+      expect(clusters[i].y).toBeCloseTo(color.y);
+      expect(clusters[i].z).toBeCloseTo(color.z);
+    });
+  });
+  test('randomized initial clusters', () => {
+    const random = 4; // chosen by fair dice roll.
+    // guaranteed to be random.
+    const inital = colors.map((c) => ({
+      x: c.x + random,
+      y: c.y + random,
+      z: c.z + random,
+    }));
+    const clusters = kmeans(pixels, inital, 16);
+    colors.forEach((color, i) => {
+      expect(clusters[i].count).toEqual(perColor);
+      expect(clusters[i].x).toBeCloseTo(color.x);
+      expect(clusters[i].y).toBeCloseTo(color.y);
+      expect(clusters[i].z).toBeCloseTo(color.z);
+    });
+  });
+  test('fewer clusters than colors', () => {
+    const random = 4; // chosen by fair dice roll.
+    // guaranteed to be random.
+    const inital = colors.map((c) => ({
+      x: c.x + random,
+      y: c.y + random,
+      z: c.z + random,
+    })).slice(0, 3);
+    const clusters = kmeans(pixels, inital, 16);
+    expect(clusters).toMatchInlineSnapshot(`
+Array [
+  Object {
+    "count": 8,
+    "x": 55,
+    "y": -28.5,
+    "z": 1,
+  },
+  Object {
+    "count": 4,
+    "x": 100,
+    "y": 0,
+    "z": 0,
+  },
+  Object {
+    "count": 4,
+    "x": 0,
+    "y": 0,
+    "z": 0,
+  },
+]
+`);
   });
   test('1x1 image', () => {
-    const result = kmeans(image1x1, 4, 4);
+    const result = kmeans(pixels.subarray(0, 3), colors, 4);
     const zeros = result.filter((c) => c.count === 0);
     const nonZero = result.filter((c) => c.count > 0);
     expect(zeros).toHaveLength(3);
     expect(nonZero).toEqual([{
       count: 1,
-      x: 127,
-      y: 127,
-      z: 127,
+      x: 50,
+      y: -32,
+      z: 0,
     }]);
   });
-  test('k < 1', () => {
-    expect(() => kmeans(image1x1, 0, 16)).toThrow('k must be greater than 0');
+  test('matches snapshot', async () => {
+    const data = await getLabTestData();
+    const initial = [
+      { x: 0, y: 0, z: 0 },
+      { x: 50, y: 0, z: 0 },
+      { x: 100, y: 0, z: 0 },
+    ];
+    const actual = kmeans(data, initial, 4);
+    expect(actual).toMatchSnapshot();
   });
 });

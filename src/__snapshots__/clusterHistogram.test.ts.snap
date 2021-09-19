@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`clusterHistogram matches snapshot 1`] = `
+Array [
+  Object {
+    "count": 1877,
+    "x": 5.450388706434306,
+    "y": 0,
+    "z": 0,
+  },
+  Object {
+    "count": 1297,
+    "x": 74.19850345616341,
+    "y": 17.59626962059904,
+    "z": 50.07157975362288,
+  },
+  Object {
+    "count": 1082,
+    "x": 89.07517793139733,
+    "y": 0,
+    "z": 0,
+  },
+  Object {
+    "count": 857,
+    "x": 58.67642932627202,
+    "y": 46.0839467883922,
+    "z": 50.218335296709554,
+  },
+]
+`;

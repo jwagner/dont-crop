@@ -1,11 +1,29 @@
-import mcgRandom from './mcgRandom';
+// import mcgRandom from './mcgRandom';
 
-interface Cluster {
+type Point = {
   x: number;
   y: number;
   z: number;
+};
+
+export interface Cluster extends Point {
   count: number;
 }
+
+const channels = 3;
+// sadly this is about twice as fast as x ** 2.
+const squared = (x: number) => x * x;
+
+// function selectClusterAtRandom(image: ImageData, random: () => number): Cluster {
+//   const i = ((random() * image.width * image.height) | 0) * channels;
+//   const { data } = image;
+//   return {
+//     x: data[i],
+//     y: data[i + 1],
+//     z: data[i + 2],
+//     count: 0,
+//   };
+// }
 
 // This function also operates without doing any gamma correction.
 // I haven't evaluated the effect of this on the output.
@@ -15,35 +33,38 @@ interface Cluster {
 // So the euclidian distance between the gamma encoded values might
 // more closely match the perceived distance between the colors.
 // Or it's just an excuse to save a few cycles. ¯\_(ツ)_/¯
-export function kmeans(image: ImageData, k: number, iterations: number): Cluster[] {
-  const random = mcgRandom();
-  const random255 = () => random() * 255;
-  if (k < 1) throw new Error('k must be greater than 0');
-  const { data } = image;
+
+export function kmeans(
+  data: Float64Array,
+  initialClusters: Point[],
+  iterations: number,
+): Cluster[] {
+  // const { data } = image;
   const clusters: Cluster[] = [];
   const nextClusters: Cluster[] = [];
-  for (let i = 0; i < k; i++) {
+  // (histogramColors(image, k)).forEach(([r, g, b]) => {
+  //   const { l: x, a: y, b: z } = srgbToLab({ r: r / 255, g: g / 255, b: b / 255 });
+  //   clusters.push({
+  //     x, y, z, count: 0,
+  //   });
+  //   nextClusters.push({
+  //     x: 0, y: 0, z: 0, count: 0,
+  //   });
+  // });
+  initialClusters.forEach((point) => {
+    nextClusters.push({ ...point, count: 1 });
     clusters.push({
-      x: random255(), y: random255(), z: random255(), count: 0,
-    });
-    nextClusters.push({
       x: 0, y: 0, z: 0, count: 0,
     });
-  }
+  });
   for (let i = 0; i < iterations; i++) {
     clusters.forEach((cluster, j) => {
       // move next clusters to current clusters
       const nextCluster = nextClusters[j];
-      if (nextCluster.count > 0) {
-        cluster.x = nextCluster.x / nextCluster.count;
-        cluster.y = nextCluster.y / nextCluster.count;
-        cluster.z = nextCluster.z / nextCluster.count;
-      } else {
-        // give empty clusters another chance
-        cluster.x = random255();
-        cluster.y = random255();
-        cluster.z = random255();
-      }
+      const count = Math.max(nextCluster.count, 1);
+      cluster.x = nextCluster.x / count;
+      cluster.y = nextCluster.y / count;
+      cluster.z = nextCluster.z / count;
       cluster.count = nextCluster.count;
 
       // reset next clusters
@@ -53,16 +74,19 @@ export function kmeans(image: ImageData, k: number, iterations: number): Cluster
       nextCluster.count = 0;
     });
 
-    for (let p = 0; p < data.length; p += 4) {
-      let closestClusterDistance = (data[p] - clusters[0].x) ** 2
-        + (data[p + 1] - clusters[0].y) ** 2
-        + (data[p + 2] - clusters[0].z) ** 2;
-      let closestCluster = nextClusters[0];
+    for (let p = 0; p < data.length; p += 3) {
+      const x = data[p];
+      const y = data[p + 1];
+      const z = data[p + 2];
+      let closestClusterDistance = Infinity;
+      let closestCluster: Cluster = clusters[0];
       // find the closest cluster
-      for (let ci = 1; ci < clusters.length; ci++) {
-        const distance = (data[p] - clusters[ci].x) ** 2
-          + (data[p + 1] - clusters[ci].y) ** 2
-          + (data[p + 2] - clusters[ci].z) ** 2;
+      for (let ci = 0; ci < clusters.length; ci++) {
+        // since this is just used in a comparison the sqrt is not needed
+        const cluster = clusters[ci];
+        const distance = squared(x - cluster.x)
+          + squared(y - cluster.y)
+          + squared(z - cluster.z);
 
         if (distance < closestClusterDistance) {
           closestClusterDistance = distance;
@@ -71,9 +95,9 @@ export function kmeans(image: ImageData, k: number, iterations: number): Cluster
       }
       // add pixel to the closest cluster
       closestCluster.count += 1;
-      closestCluster.x += data[p];
-      closestCluster.y += data[p + 1];
-      closestCluster.z += data[p + 2];
+      closestCluster.x += x;
+      closestCluster.y += y;
+      closestCluster.z += z;
     }
   }
   return clusters;

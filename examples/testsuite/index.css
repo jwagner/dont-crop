@@ -59,17 +59,35 @@ input, select {
   height: 100%;
 }
 
+.visualization {
+  position: absolute;
+  z-index: 10;
+  top:  0em;
+  right: 0;
+  /* transform: scale(0.5); */
+  /* transform-origin: 100% 0%; */
+  transition: opacity 0.2s ease-out;
+  opacity: 0;
+}
+
+.frame:hover  .visualization {
+  opacity: 1.0;
+}
+
 .colors {
   display: inline-block;
   margin-right: 1ex;
-  border: 1px solid white;
-  height: 1em;
+  height: 2em;
+  vertical-align: bottom;
 }
 
 .color {
   display: inline-block;
-  width: 1em;
-  height: 1em;
+  width: 2em;
+  height: 2em;
+  border: 2px solid white;
+  border-radius: 100%;
+  margin-right: 1ex;
 }
 
 .dropzone {
@@ -95,6 +113,9 @@ input, select {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: center;
-  
+  justify-content: center; 
+}
+
+.info {
+  margin: 1em 0;
 }
