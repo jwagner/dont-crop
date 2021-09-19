@@ -1,6 +1,6 @@
 {
   "name": "dont-crop",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "description": "A library to fit gradients to images and extract it's dominant colors to help you avoid cropping images.",
   "main": "./dist/cjs/lib.js",
   "module": "./dist/mjs/lib.js",

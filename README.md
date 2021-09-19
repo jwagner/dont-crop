@@ -112,11 +112,12 @@ The code is well covered in tests. The examples are used as end to end tests in 
 
 Glad you asked. `fitGradient()` is using simple [linear regression](https://en.wikipedia.org/wiki/Linear_regression).
 
-`getPallete()` is based on [k-means](https://en.wikipedia.org/wiki/K-means_clustering).
+`getPalete()` is based on [k-means](https://en.wikipedia.org/wiki/K-means_clustering).
 The initial clusters are chosen using a histogram.
 Similar clusters in the result are merged in a post processing step.
 This is necessary because k-means tends to return equally sized clusters
 whereas getPalette is supposed to return distinct clusters.
+The merging is tuned to preserve different hues and colors rather than returning the most prominent shades of color (which might all share a similar hue).
 The processing happens in the CIE Lab color space using CIE76 ΔE*.
 
 
@@ -150,13 +151,11 @@ to find smarter crops.
 
 There are plenty of interesting ways to improve this library further.
 
-* Adding creative controls over colors (max saturation, max lightness, min lightness)
+* Grouping of colors (saturated, muted, light, dark, warm, cold)
+* Tuning of the variables involved in palette extraction potentially allowing some degree of tweaking by the user of the library
 * Weighting the linear-regression and k-means to focus on the center or edges
 * Using a more robust regression variation like Theil-Senn
 * Gamma corrected linear gradients by manually interpolating the stops
-* Something better than straight k-means for palette extraction
-
-All of these would of course add complexity (and size) as well, so for now it's the simplest thing that could possibly work. 
 
 ## License
 
