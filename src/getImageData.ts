@@ -6,18 +6,21 @@ function getCanvas(): HTMLCanvasElement {
   return canvasEl;
 }
 
+// a custom type predicate to work around the lack of a VideoFrame type in the DOM types
+function isVideoFrame(image: CanvasImageSource): image is VideoFrame {
+  return typeof VideoFrame !== 'undefined' && image instanceof VideoFrame;
+}
+
 function getDimensions(image: CanvasImageSource) {
   if (image instanceof HTMLImageElement) {
     return { width: image.naturalWidth, height: image.naturalHeight };
-  } else if (image instanceof VideoFrame) {
+  } else if (isVideoFrame(image)) {
     return { width: image.displayWidth, height: image.displayHeight };
   } else {
     return { width: +image.width, height: +image.height };
   }
 }
 
-
-// CanvasImageSource now include VideoFrame which doesn't support width
 export function getImageData(image: CanvasImageSource, maxDimension: number | undefined) {
   const canvas = getCanvas();
   const { width, height } = getDimensions(image);
@@ -28,7 +31,7 @@ export function getImageData(image: CanvasImageSource, maxDimension: number | un
   const outputHeight = (height * scale) | 0;
   canvas.width = outputWidth;
   canvas.height = outputHeight;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) throw new Error('getContext failed');
   ctx.imageSmoothingQuality = 'low';
   ctx.drawImage(image, 0, 0, outputWidth, outputHeight);

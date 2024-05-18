@@ -1,7 +1,27 @@
 import { fitGradient, getPalette } from '../../src/lib';
 import { fitGradient as fitGradientInternal } from '../../src/fitGradient';
 import './index.css';
-import * as index from './unsplash/small/index.json';
+
+// nasty hardcoded index of images to make webpack happy
+const index = {
+  "images": [
+    require("./unsplash/small/abed-ismail-fZXZ1-hbFrY-unsplash.jpg"),
+    require("./unsplash/small/amit-pritam-xO4a2U9jf00-unsplash.jpg"),
+    require("./unsplash/small/bob-brewer-s3dRFddp2lM-unsplash.jpg"),
+    require("./unsplash/small/clement-remond-n5hr-myI-Zo-unsplash.jpg"),
+    require("./unsplash/small/david-clode-zBORpP97apw-unsplash.jpg"),
+    require("./unsplash/small/enguerran-urban-NNfGpEadinQ-unsplash.jpg"),
+    require("./unsplash/small/jeremy-hynes-l_eSPV-eW8o-unsplash.jpg"),
+    require("./unsplash/small/jezael-melgoza-5zEAESyVMzM-unsplash.jpg"),
+    require("./unsplash/small/kevin-chinchilla-tqYpQothXHo-unsplash.jpg"),
+    require("./unsplash/small/nathalia-arantes-WYrvPSf0rlI-unsplash.jpg"),
+    require("./unsplash/small/parsa-mahmoudi-wTsaSE-U7qY-unsplash.jpg"),
+    require("./unsplash/small/sam-ueJJlc4Mclk-unsplash.jpg"),
+    require("./unsplash/small/shio-yang-WlEgMwnNlWY-unsplash.jpg"),
+    require("./unsplash/small/sincerely-media-tpgd1EpaaOE-unsplash.jpg"),
+    require("./unsplash/small/thomas-millot-2JSLLwtM8MU-unsplash.jpg")
+  ]
+};
 
 function processImage(
   imageEl: HTMLImageElement,
@@ -29,7 +49,7 @@ function visualizeLinearRegression(imageEl: HTMLImageElement): HTMLCanvasElement
   const canvas = document.createElement('canvas');
   canvas.width = imageEl.naturalWidth;
   canvas.height = imageEl.naturalHeight;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) throw new Error('could not get context');
   ctx.drawImage(imageEl, 0, 0);
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -80,7 +100,7 @@ async function metaDataFromName(name: string) {
     .join(' ');
   const href = `https://unsplash.com/photos/${matches?.[2] || ''}`;
   return {
-    src: (await import(`./unsplash/small/${name}`)).default as string,
+    src: name,
     author,
     href,
   };

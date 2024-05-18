@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 import serveStatic from 'serve-static';
 import { join } from 'path';
 import { readFileSync, writeFileSync } from 'fs';
@@ -9,19 +9,19 @@ import assert from 'assert';
 const PORT = 3000;
 const PREFIX = '/sandbox/2021/dont-crop/';
 
-async function testReact(browser: puppeteer.Browser) {
+async function testReact(browser: Browser) {
   const page = await browser.newPage();
   log(page);
   await page.goto(`http://localhost:${PORT}${PREFIX}react.html`);
   const el = await page.waitForSelector('.frame[style]');
   const actual = await el?.evaluate((node) => node.getAttribute('style'));
-  const expected = 'background: linear-gradient(rgb(169, 163, 149), rgb(87, 103, 109));';
+  const expected = 'background: linear-gradient(rgb(169, 163, 149), rgb(89, 105, 111));';
   if (actual !== expected) {
-    throw new Error(`unexpected image style ${actual}`);
+    throw new Error(`unexpected image style ${actual}, expected ${expected}`);
   }
 }
 
-async function testTestsuite(browser: puppeteer.Browser) {
+async function testTestsuite(browser: Browser) {
   const page = await browser.newPage();
   log(page);
 
@@ -61,12 +61,12 @@ async function testTestsuite(browser: puppeteer.Browser) {
   }
 }
 
-function log(page: puppeteer.Page) {
+function log(page: Page) {
   page
     .on('console', (message) => console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
     .on('pageerror', ({ message }) => console.log(message))
     .on('response', (response) => console.log(`${response.status()} ${response.url()}`))
-    .on('requestfailed', (request) => console.log(`${request.failure().errorText} ${request.url()}`));
+    .on('requestfailed', (request) => console.log(`${request.failure()?.errorText} ${request.url()}`));
 }
 
 (async function main() {
