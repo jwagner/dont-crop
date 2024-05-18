@@ -12,6 +12,7 @@ export async function getTestImageData(): Promise<ImageData> {
     width: info.width,
     height: info.height,
     data: new Uint8ClampedArray(data.buffer),
+    colorSpace: 'srgb' as PredefinedColorSpace
   };
   return imageData;
 }

@@ -18,12 +18,15 @@ npm unlink dont-crop
 npm install "../$tarball" 
 echo "testing ts-node commonjs"
 npm start
+
 # test esm compatibility  as  well
-if [ "$node_major_version" -ge 14 ]
-  then
-    echo "testing ts-node esm"
-    node --loader ts-node/esm example.ts
-fi
+# Native esm with ts-node is currently broken:
+# https://github.com/TypeStrong/ts-node/issues/1997
+#if [ "$node_major_version" -ge 14 ]
+#  then
+#    echo "testing ts-node esm"
+#    node --loader ts-node/esm example.ts
+#fi
 cd ..
 
 # test plain node module compatibility

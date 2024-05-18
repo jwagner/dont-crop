@@ -51,20 +51,20 @@ describe('kmeans', () => {
     })).slice(0, 3);
     const clusters = kmeans(pixels, inital, 16);
     expect(clusters).toMatchInlineSnapshot(`
-Array [
-  Object {
+[
+  {
     "count": 8,
     "x": 55,
     "y": -28.5,
     "z": 1,
   },
-  Object {
+  {
     "count": 4,
     "x": 100,
     "y": 0,
     "z": 0,
   },
-  Object {
+  {
     "count": 4,
     "x": 0,
     "y": 0,

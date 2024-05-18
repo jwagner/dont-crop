@@ -16,6 +16,7 @@ test('fitGradient', () => {
     width,
     height,
     data,
+    colorSpace: 'srgb' as PredefinedColorSpace
   };
   const result = fitGradient(imageData).map((c) => c.map(Math.round));
   expect(result).toEqual([[0, 106, 3], [42, 0, 3]]);

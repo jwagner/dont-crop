@@ -4,6 +4,7 @@ const testImage = {
   width: 1,
   height: 2,
   data: new Uint8ClampedArray([0, 0, 0, 0, 255, 0, 0, 255]),
+  colorSpace: 'srgb' as PredefinedColorSpace
 };
 
 test('getPaletteFromImageData', () => {

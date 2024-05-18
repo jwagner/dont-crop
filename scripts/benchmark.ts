@@ -24,10 +24,12 @@ async function loadImageData(size: number): Promise<ImageData> {
   if (data.length !== info.width * info.height * 4) {
     throw new Error(`Invalid image dimensions ${data.length} != ${info.width} * ${info.height} * 4`);
   }
+
   const imageData: ImageData = {
     width: info.width,
     height: info.height,
     data: new Uint8ClampedArray(data.buffer),
+    colorSpace: 'srgb',
   };
   return imageData;
 }
@@ -51,6 +53,6 @@ async function loadImageData(size: number): Promise<ImageData> {
     .on('complete', function complete(this: any) {
       console.log(`Fastest is ${this.filter('fastest').map('name')}`);
     })
-  // run async
+    // run async
     .run();
 }());

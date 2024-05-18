@@ -62,12 +62,12 @@ module.exports = (env) => {
           options: { configFile: 'tsconfig.json' },
         },
         {
-          test: /\.css?$/,
+          test: /\.css$/,
           use: ['style-loader', 'css-loader'],
           sideEffects: true,
         },
         {
-          test: /\.(jpg|png)?$/,
+          test: /\.(jpg|png)$/,
           type: 'asset/resource',
         },
       ],
