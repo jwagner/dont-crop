@@ -112,7 +112,7 @@ The code is well covered in tests. The examples are used as end to end tests in 
 
 Glad you asked. `fitGradient()` is using simple [linear regression](https://en.wikipedia.org/wiki/Linear_regression).
 
-`getPalete()` is based on [k-means](https://en.wikipedia.org/wiki/K-means_clustering).
+`getPalette()` is based on [k-means](https://en.wikipedia.org/wiki/K-means_clustering).
 The initial clusters are chosen using a histogram.
 Similar clusters in the result are merged in a post processing step.
 This is necessary because k-means tends to return equally sized clusters
