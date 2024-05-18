@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - run: sudo apt-get -y install --no-install-recommends chromium-driver build-essental libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+      - run: sudo apt-get -y install --no-install-recommends chromium-driver build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
       - run: npm ci
       - run: npx puppeteer browsers install chrome
       - run: npm run build
