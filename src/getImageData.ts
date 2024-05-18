@@ -6,10 +6,21 @@ function getCanvas(): HTMLCanvasElement {
   return canvasEl;
 }
 
+function getDimensions(image: CanvasImageSource) {
+  if (image instanceof HTMLImageElement) {
+    return { width: image.naturalWidth, height: image.naturalHeight };
+  } else if (image instanceof VideoFrame) {
+    return { width: image.displayWidth, height: image.displayHeight };
+  } else {
+    return { width: +image.width, height: +image.height };
+  }
+}
+
+
+// CanvasImageSource now include VideoFrame which doesn't support width
 export function getImageData(image: CanvasImageSource, maxDimension: number | undefined) {
   const canvas = getCanvas();
-  const width = image instanceof HTMLImageElement ? image.naturalWidth : +image.width;
-  const height = image instanceof HTMLImageElement ? image.naturalHeight : +image.height;
+  const { width, height } = getDimensions(image);
   const scale = maxDimension
     ? Math.min(maxDimension / Math.max(width, height), 1.0)
     : 1;
